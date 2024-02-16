@@ -3,7 +3,14 @@ import { GoFilter } from "react-icons/go";
 import { useState } from "react";
 import SortByModal from "../Modals/SortByModal";
 
-const ConnectSearch = ({ handleSearchResultContainerClick }) => {
+const ConnectSearch = ({
+  handleSearchResultContainerClick,
+  handleInput,
+  minValue,
+  maxValue,
+  gender,
+  setGender,
+}) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const handleFilterClick = () => {
@@ -37,7 +44,14 @@ const ConnectSearch = ({ handleSearchResultContainerClick }) => {
       </div>
       {isFilterOpen && (
         <div className="modal-full-container">
-          <SortByModal handleFilterClose={handleFilterClose} />
+          <SortByModal
+            handleInput={handleInput}
+            minValue={minValue}
+            maxValue={maxValue}
+            gender={gender}
+            setGender={setGender}
+            handleFilterClose={handleFilterClose}
+          />
         </div>
       )}
       <div className="filter-search-bus" onClick={handleFilterClick}>

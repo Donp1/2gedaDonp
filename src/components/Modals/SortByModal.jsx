@@ -1,7 +1,15 @@
 import { AiOutlineRight } from "react-icons/ai";
 import ActionButton from "../Commons/Button";
+import MultiRangeSlider from "multi-range-slider-react";
 
-const SortByModal = ({ handleFilterClose }) => {
+const SortByModal = ({
+  handleFilterClose,
+  handleInput,
+  minValue,
+  maxValue,
+  gender,
+  setGender,
+}) => {
   return (
     <div className="sort-modal-container">
       <div className="sort-by-reset flex">
@@ -12,25 +20,54 @@ const SortByModal = ({ handleFilterClose }) => {
       <div className="gender-sel">
         <div className="gend-txt">Gender</div>
         <div className="gen-sel-bx flex">
-          <div className="gend-btn flex activ-gend">Female</div>
-          <div className="gend-btn flex">Male</div>
-          <div className="gend-btn flex">Others</div>
+          <div
+            onClick={() => setGender("female")}
+            className={`gend-btn flex ${gender == "female" && "activ-gend"}`}
+          >
+            Female
+          </div>
+          <div
+            onClick={() => setGender("male")}
+            className={`gend-btn flex ${gender == "male" && "activ-gend"}`}
+          >
+            Male
+          </div>
+          <div
+            onClick={() => setGender("others")}
+            className={`gend-btn flex ${gender == "others" && "activ-gend"}`}
+          >
+            Others
+          </div>
         </div>
       </div>
       <hr className="line-ran"></hr>
 
-      <div className="age-range-container">
-        <div className="sort-by-reset flex">
-          <div className="gend-txt">Age range</div>
-          <div className="range-score">
-            18 <span>to</span> 60
-          </div>
+      <div style={{ paddingTop: 5, paddingBottom: 5 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            fontSize: 15,
+            marginBottom: 10,
+          }}
+        >
+          {minValue}/{maxValue}
         </div>
-        <div className="age-range-bx">
-          <div className="slider-cicrle-minmum"></div>
-          <div className="main-slider"></div>
-          <div className="slider-cicrle-maximum"></div>
-        </div>
+        <MultiRangeSlider
+          min={0}
+          max={100}
+          step={5}
+          minValue={minValue}
+          maxValue={maxValue}
+          onInput={(e) => {
+            handleInput(e);
+          }}
+          ruler={false}
+          label={false}
+          style={{ padding: 0, border: 0 }}
+          barInnerColor="#aaa"
+        />
       </div>
       <hr className="line-ran"></hr>
 

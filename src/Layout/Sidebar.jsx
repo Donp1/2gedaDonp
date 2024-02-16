@@ -8,6 +8,7 @@ import { IoLogOutOutline, IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { MdOutlineHowToVote } from "react-icons/md";
 import "./style.css";
 import { NavLink } from "react-router-dom";
+import { IoIosPeople } from "react-icons/io";
 
 const Sidebar = ({ isCollapsed }) => {
   return (
@@ -24,6 +25,15 @@ const Sidebar = ({ isCollapsed }) => {
           >
             <BiSolidHome className="side-icon " />
             <div className="sidebar-text">Home</div>
+          </NavLink>
+          <NavLink
+            to="/connect"
+            className={({ isActive }) =>
+              isActive ? "active_link side-item" : "side-item"
+            }
+          >
+            <IoIosPeople className="side-icon " />
+            <div className="sidebar-text">Connect</div>
           </NavLink>
           {/* <NavLink
             to="/connect"

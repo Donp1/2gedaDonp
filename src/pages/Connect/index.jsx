@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import MainLayout from "../../Layout/MainLayout";
+import SwipeableViews from "react-swipeable-views";
 // import DashMessage from "../../components/Dashboard/DasMess";
 // import Follower from "../../components/Dashboard/Follower";
 import "./style.css";
@@ -11,6 +12,10 @@ import ProfileStick from "../../components/Commons/ProfileStick";
 import SearchBusinessCard from "../../components/SearchComp/SearchBusinessCard";
 import BusinessStick from "../../components/Commons/BusinessStick";
 import ClamBuss from "../BussinessDirectory/ClamBuss";
+import Follower from "components/Dashboard/Follower";
+import DashMessage from "components/Dashboard/DasMess";
+import { getConnects, getUserById, sortConnects } from "./functions";
+import ConnectItem from "./ConnectItem";
 
 const Data = [
   {
@@ -30,6 +35,105 @@ const Connect = () => {
   const [isClaimModalOpenTwo, setIsClaimModalOpenTwo] = useState(false);
   const [isClaimModalOpenThree, setIsClaimModalOpenThree] = useState(false);
   const [isClaimModalOpenDone, setIsClaimModalOpenDone] = useState(false);
+
+  const [connects, setConnects] = useState([
+    {
+      cover_image: {
+        id: 55,
+        cover_image: "https://i.pravatar.cc/50?img=3" || "/images/pic1.png",
+        user: 27,
+      },
+      media: [
+        {
+          id: 69,
+          profile_image: "https://picsum.photos/500?random=1",
+          user: 18,
+        },
+        {
+          id: 71,
+          profile_image: "https://picsum.photos/500?random=2",
+          user: 18,
+        },
+      ],
+      username: "Donp",
+      full_name: "Joseph Precious",
+      bio: null || "No bio Available...",
+    },
+    {
+      cover_image: {
+        id: 55,
+        cover_image: "https://i.pravatar.cc/50?img=4" || "/images/pic1.png",
+        user: 27,
+      },
+      media: [
+        {
+          id: 69,
+          profile_image: "https://picsum.photos/500?random=3",
+          user: 18,
+        },
+        {
+          id: 69,
+          profile_image: "https://picsum.photos/500?random=4",
+          user: 18,
+        },
+        {
+          id: 71,
+          profile_image: "https://picsum.photos/500?random=5",
+          user: 18,
+        },
+      ],
+      username: "Donflexy",
+      full_name: "Samuel Peters",
+      bio: null || "No bio Available...",
+    },
+    {
+      cover_image: {
+        id: 55,
+        cover_image: "https://i.pravatar.cc/50?img=5" || "/images/pic1.png",
+        user: 27,
+      },
+      media: [
+        {
+          id: 69,
+          profile_image: "https://picsum.photos/500?random=6",
+          user: 18,
+        },
+        {
+          id: 69,
+          profile_image: "https://picsum.photos/500?random=7",
+          user: 18,
+        },
+        {
+          id: 71,
+          profile_image: "https://picsum.photos/500?random=8",
+          user: 18,
+        },
+        {
+          id: 71,
+          profile_image: "https://picsum.photos/500?random=9",
+          user: 18,
+        },
+        {
+          id: 71,
+          profile_image: "https://picsum.photos/500?random=10",
+          user: 18,
+        },
+      ],
+      username: "Donflexy",
+      full_name: "Samuel Peters",
+      bio: null || "No bio Available...",
+    },
+  ]);
+  const [loading, setLoading] = useState(false);
+
+  const [minValue, set_minValue] = useState(18);
+  const [maxValue, set_maxValue] = useState(100);
+  const [gender, setGender] = useState("");
+
+  const handleInput = (e) => {
+    set_minValue(e.minValue);
+    set_maxValue(e.maxValue);
+  };
 
   const handleClaimClickDone = (e) => {
     e.preventDefault();
@@ -93,6 +197,16 @@ const Connect = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const token = localStorage.getItem("authTOken");
+      const my_connects = await getConnects(token);
+      // setConnects(my_connects);
+      console.log(my_connects);
+      setLoading(false);
+    })();
+  }, []);
   return (
     <>
       <ClamBuss
@@ -126,8 +240,15 @@ const Connect = () => {
                 <>
                   <div>
                     <div className="head-line bus-dir">Connect</div>
-                    <ConnectSearch />
-                    {/* <img src="images/jumia.png" alt="" className="ads-img" /> */}
+                    <ConnectSearch
+                      handleInput={handleInput}
+                      minValue={minValue}
+                      maxValue={maxValue}
+                      gender={gender}
+                      setGender={setGender}
+                    />
+                    <br />
+                    <img src="images/jumia.png" alt="" className="ads-img" />
                   </div>
                   <div className="select-what-display w-dis">
                     {Data.map((item, index) => (
@@ -146,49 +267,33 @@ const Connect = () => {
                       </div>
                     ))}
                   </div>
+
                   {activeTab === "People nearby" ? (
-                    <div className="connect-profile-view-box">
-                      <div className="cont-view-connect">
-                        <div className="arrr-ctrl disable flex">
-                          <AiOutlineLeft />
+                    <div className="content_container">
+                      {loading ? (
+                        <div className="connect_loader w-full">
+                          <h4 className="text-center text-[#fff] w-full">
+                            Loading Connects...
+                          </h4>
                         </div>
-                        <div className="image-bx-cont">
-                          <div className="share-bx flex">
-                            <GiShare />
-                          </div>
-                          <div className="indicator-bx">
-                            <div className="ind-con actvv"></div>
-                            <div className="ind-con"></div>
-                            <div className="ind-con"></div>
-                          </div>
-                          <div className="flex all-ma-box">
-                            <img src="images/pic3.png" alt="" />
-                            <img src="images/pic2.png" alt="" />
-                          </div>
-                          <div className="prof-bx-connect">
-                            <img
-                              src="images/pic1.png"
-                              alt=""
-                              onClick={handleProfileClick}
-                            />
-                            <div className="user-nmm">Mercy Alake</div>
-                            <div className="username-txtt">@mercyalkkk</div>
-                            <div className="username-txtt">
-                              Abeokuta, 56km From you
-                            </div>
-                            <div className="username-txtt biiio">
-                              Adewalw wed addyjum Adewalw wed addyjum Adewal...
-                            </div>
-                          </div>
-                          <div className="chat-stick-btn-bx flex">
-                            <button className="ch-st-btn ora-btn">Chat</button>
-                            <button className="ch-st-btn">Stick</button>
-                          </div>
-                        </div>
-                        <div className="arrr-ctrl flex">
-                          <AiOutlineRight />
-                        </div>
-                      </div>
+                      ) : connects?.length > 0 ? (
+                        <SwipeableViews
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                          }}
+                          enableMouseEvents
+                        >
+                          {connects?.map((connect, index) => (
+                            <ConnectItem key={index} connect={connect} />
+                          ))}
+                        </SwipeableViews>
+                      ) : (
+                        <h4 className="text-center text-[#fff] w-full">
+                          No People Nearby To Display. Kindly Update your
+                          location
+                        </h4>
+                      )}
                     </div>
                   ) : null}
 
@@ -221,14 +326,19 @@ const Connect = () => {
             </div>
 
             <div className="middle-side-container mvmm">
-              <img src="images/ads1.png" alt="" />
+              <img
+                className=""
+                style={{ height: "100vh" }}
+                src="images/ads1.png"
+                alt=""
+              />
             </div>
             <div className="right-side-container">
-              <SelectCategory />
-              {/* <Follower />
+              {/* <SelectCategory /> */}
+              <Follower />
               <div className="mess-bxx-conn">
                 <DashMessage />
-              </div> */}
+              </div>
             </div>
           </div>
         </MainLayout>
